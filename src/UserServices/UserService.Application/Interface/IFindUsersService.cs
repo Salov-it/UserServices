@@ -1,4 +1,4 @@
-﻿using UserService.Domain;
+﻿using UserService.Application.Dto;
 
 namespace UserService.Application.Interface
 {
@@ -13,6 +13,6 @@ namespace UserService.Application.Interface
         /// <param name="phone">Телефон пользователя (необязательно).</param>
         /// <param name="email">Email пользователя (необязательно).</param>
         /// <returns>Задача, представляющая собой асинхронную операцию, с результатом в виде списка пользователей.</returns>
-        Task<IEnumerable<User>> SearchUsersAsync(string lastName = null, string firstName = null, string middleName = null, string phone = null, string email = null);
+        Task<ResponseDto<IEnumerable<Domain.User>>> SearchUsersAsync(FindUserDto findUser);
     }
 }

@@ -1,0 +1,11 @@
+# Используйте базовый образ SQL Server
+FROM mcr.microsoft.com/mssql/server:2019-latest
+
+# Установка рабочей директории
+WORKDIR /scripts
+
+# Копирование начальных скриптов в контейнер
+COPY scripts/ /scripts/
+
+# Разрешение выполнения скриптов
+RUN chmod +x /scripts/setup.sh

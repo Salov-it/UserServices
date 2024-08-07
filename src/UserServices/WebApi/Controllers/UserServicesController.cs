@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UserService.Application.CQRS.Command.Create;
+using UserService.Application.CQRS.Get.GetUserById;
 using UserService.Application.Dto;
 
 namespace WebApi.Controllers
@@ -31,6 +32,20 @@ namespace WebApi.Controllers
             if (!result.IsSuccesful)
             {
                 return BadRequest(result.ErrorMsg);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("GetUserById")]
+        public async Task<IActionResult> GetUserById([FromBody] int UserId)
+        {
+            var command = new GetUserByIdCommand { UserId = UserId };
+            var result = await _mediator.Send(command);
+
+            if (result.ErrorMessage == null) 
+            {
+                return BadRequest(result.ErrorMessage);
             }
 
             return Ok(result);

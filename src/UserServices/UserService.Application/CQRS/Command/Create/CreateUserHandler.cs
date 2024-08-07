@@ -1,13 +1,14 @@
 ﻿using MediatR;
 using FluentValidation.Results;
+using UserService.Application.Interface;
 
 namespace UserService.Application.CQRS.Command.Create
 {
     public class CreateUserHandler : IRequestHandler<CreateUserCommand, ServiceResult>
     {
-        private readonly CreateUser _createUser;
+        private readonly ICreateUserService _createUser;
 
-        public CreateUserHandler(CreateUser createUser)
+        public CreateUserHandler(ICreateUserService createUser)
         {
             _createUser = createUser;
         }
