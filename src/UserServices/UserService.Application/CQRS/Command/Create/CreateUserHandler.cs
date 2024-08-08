@@ -4,20 +4,23 @@ using UserService.Application.Interface;
 
 namespace UserService.Application.CQRS.Command.Create
 {
-    public class CreateUserHandler : IRequestHandler<CreateUserCommand, ServiceResult>
+    public class CreateUserHandler : IRequestHandler<CreateUserCommand,ServiceResult>
     {
         private readonly ICreateUserService _createUser;
+        private readonly CreateUserValidatorFactory _validatorFactory;
 
-        public CreateUserHandler(ICreateUserService createUser)
+        public CreateUserHandler(ICreateUserService createUser, CreateUserValidatorFactory validatorFactory)
         {
             _createUser = createUser;
+          
+            _validatorFactory = validatorFactory;
         }
 
-        public async Task<ServiceResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<ServiceResult> Handle(CreateUserCommand request,CancellationToken cancellationToken)
         {
-            // Создаем валидатор и выполняем валидацию
-            CreateUserValidator validator = new CreateUserValidator(request.createUser.DeviceType);
-            ValidationResult results = await validator.ValidateAsync(request.createUser);
+            var validator = _validatorFactory.Create();
+
+            ValidationResult results = await validator.ValidateAsync(request.createUser, cancellationToken);
 
             if (!results.IsValid)
             {

@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using MSSQL.Application.DependencyInjection;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using UserService.Application.CQRS.Command.Create;
 using UserService.Application.CQRS.Get.GetFindUser;
 using UserService.Application.CQRS.Get.GetUserById;
@@ -11,12 +11,12 @@ namespace UserService.Application.Dependencyinjection
     {
         public static IServiceCollection AddUserServiceApplication(this IServiceCollection services)
         {
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
-
+            services.AddScoped<CreateUserValidatorFactory>();
             services.AddScoped<CreateUserValidator>();
             services.AddScoped<ICreateUserService, CreateUser>();
             services.AddScoped<CreateUserCommand>();
             services.AddScoped<CreateUserHandler>();
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateUserHandler).Assembly));
 
             services.AddScoped<IGetUserByIdService, GetUserById>();
             services.AddScoped<GetUserByIdCommand>();

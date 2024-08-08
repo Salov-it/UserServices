@@ -21,12 +21,17 @@ namespace WebApi.Controllers
         [HttpPost("createUser")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDto createUserDto)
         {
+
             if (createUserDto == null)
             {
                 return BadRequest("Invalid user data.");
             }
 
-            var command = new CreateUserCommand { createUser = createUserDto };
+            var command = new CreateUserCommand
+            {
+                createUser = createUserDto
+            };
+
             var result = await _mediator.Send(command);
 
             if (!result.IsSuccesful)

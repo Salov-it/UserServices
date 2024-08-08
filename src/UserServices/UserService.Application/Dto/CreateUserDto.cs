@@ -4,12 +4,7 @@ namespace UserService.Application.Dto
 {
     public class CreateUserDto
     {
-        /// <summary>
-        /// http-заголовок для валидации
-        /// </summary>
-        public string DeviceType {  get; set; }  
-
-
+    
         /// <summary>
         /// Фамилия пользователя.
         /// </summary>

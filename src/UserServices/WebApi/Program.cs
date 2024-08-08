@@ -6,6 +6,8 @@ using UserService.Application.Dependencyinjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddMSSQLApplication(builder.Configuration);
 
 builder.Services.AddUserServiceApplication();

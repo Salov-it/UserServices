@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using MSSQL.Application.Context;
 using UserService.Application.Dto;
 using UserService.Application.Interface;
-using UserService.Domain;
 
 namespace UserService.Application.CQRS.Get.GetFindUser
 {
@@ -23,11 +21,12 @@ namespace UserService.Application.CQRS.Get.GetFindUser
                 var query = _userContext.Users.AsQueryable();
 
                 query = query.Where(u =>
-                        (string.IsNullOrEmpty(findUser.LastName) || u.LastName.Contains(findUser.LastName)) &&
-                        (string.IsNullOrEmpty(findUser.FirstName) || u.FirstName.Contains(findUser.FirstName)) &&
-                        (string.IsNullOrEmpty(findUser.MiddleName) || u.MiddleName.Contains(findUser.MiddleName)) &&
-                        (string.IsNullOrEmpty(findUser.Phone) || u.Phone.Contains(findUser.Phone)) &&
-                        (string.IsNullOrEmpty(findUser.Email) || u.Email.Contains(findUser.Email))
+                        (string.IsNullOrEmpty(findUser.LastName) || u.LastName.ToLower().Contains(findUser.LastName.ToLower())) &&
+                        (string.IsNullOrEmpty(findUser.FirstName) || u.FirstName.ToLower().Contains(findUser.FirstName.ToLower())) &&
+                        (string.IsNullOrEmpty(findUser.MiddleName) || u.MiddleName.ToLower().Contains(findUser.MiddleName.ToLower())) &&
+                        (string.IsNullOrEmpty(findUser.Phone) || u.Phone.ToLower().Contains(findUser.Phone.ToLower())) &&
+                        (string.IsNullOrEmpty(findUser.Email) || u.Email.ToLower().Contains(findUser.Email.ToLower()))
+
                 );
 
                 var result = await query.ToListAsync();

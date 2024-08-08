@@ -1,0 +1,12 @@
+aspnetapp:
+    build:
+      context: .  # Контекст для сборки Dockerfile
+      dockerfile: Dockerfile  # Имя Dockerfile (если отличается от "Dockerfile")
+    container_name: aspnetapp-container
+    depends_on:
+      - sqlserver
+    ports:
+      - "5000:80"  # Проброс порта для доступа к приложению
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development  # Вы можете изменить окружение
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=UserServices;User Id=sa;Password=YourStrong!Passw0rd;  # Пример строки подключения
