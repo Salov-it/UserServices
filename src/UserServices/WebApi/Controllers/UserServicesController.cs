@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UserService.Application.CQRS.Command.Create;
+using UserService.Application.CQRS.Get.GetFindUser;
 using UserService.Application.CQRS.Get.GetUserById;
 using UserService.Application.Dto;
 
@@ -43,17 +44,43 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("GetUserById")]
-        public async Task<IActionResult> GetUserById([FromBody] int UserId)
+        public async Task<IActionResult> GetUserById([FromQuery] int UserId)
         {
             var command = new GetUserByIdCommand { UserId = UserId };
             var result = await _mediator.Send(command);
 
-            if (result.ErrorMessage == null) 
+            if (result.ErrorMessage != null) 
             {
                 return BadRequest(result.ErrorMessage);
             }
 
-            return Ok(result);
+            return Ok(result.Data);
+        }
+
+        [HttpGet("GetFindUser")]
+        public async Task<IActionResult> GetFindUser([FromQuery] string? LastName,
+            string? FirstName, string? MiddleName, string? Phone, string? Email)
+        {
+            var command = new FindUserCommand
+            {
+                findUser = new FindUserDto
+                {
+                    LastName = LastName,
+                    FirstName = FirstName,
+                    MiddleName = MiddleName,
+                    Phone = Phone,
+                    Email = Email
+                }
+            };
+
+            var result = await _mediator.Send(command);
+
+            if (result.ErrorMessage != null)
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+
+            return Ok(result.Data);
         }
     }
 }

@@ -12,7 +12,8 @@ namespace MSSQL.Application.DependencyInjection
             string? Connections = configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<UserContext>(options =>
-                    options.UseSqlServer(Connections));
+                    options.UseSqlServer(Connections,
+                    sqlOptions => sqlOptions.MigrationsAssembly("UserService.Application")));
 
             return services;
         }
